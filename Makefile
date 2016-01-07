@@ -1,4 +1,4 @@
-BOARD_TAG    = uno
+BOARD_TAG    = pro5v328
 ARDUINO_LIBS = FastLED
 
 ARDUINO_DIR   = /usr/share/arduino
