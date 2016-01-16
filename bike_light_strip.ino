@@ -124,11 +124,11 @@ void driving() {
   // Turn on the driving lights
   for ( int i = 0; i < NUM_LEDS; i++) {
     if (i < LEFT_START) {
-        leds[i] = CRGB::Orange;
+        leds[i] = CRGB::Red;
         continue;
     }
     if (i < FRONT_START) {
-        leds[i] = CRGB::Red;
+        leds[i] = CRGB::Orange;
         continue;
       }
     if (i < RIGHT_START) {
