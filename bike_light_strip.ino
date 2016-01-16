@@ -123,6 +123,7 @@ void juggle() {
 void driving() {
   // Turn on the driving lights
   for ( int i = 0; i < NUM_LEDS; i++) {
+    delay(500);
     if (i < LEFT_START) {
         leds[i] = CRGB::Red;
         continue;
@@ -142,7 +143,6 @@ void driving() {
     leds[i] = CRGB::Red;
   }
   FastLED.show();
-  delay(500);
 }
 
 SimplePatternList gPatterns = { rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm, driving };
