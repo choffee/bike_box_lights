@@ -33,7 +33,7 @@ FASTLED_USING_NAMESPACE
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 
-#define BRIGHTNESS         20
+#define BRIGHTNESS         60
 #define FRAMES_PER_SECOND  120
 
 #define LEFT_START 6
