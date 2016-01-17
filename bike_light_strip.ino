@@ -33,7 +33,7 @@ FASTLED_USING_NAMESPACE
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 
-#define BRIGHTNESS         40
+#define BRIGHTNESS         20
 #define FRAMES_PER_SECOND  120
 
 #define LEFT_START 6
@@ -50,6 +50,8 @@ uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
 
+void drive_start();
+
 void setup() {
   delay(3000); // 3 second delay for recovery
   
@@ -59,6 +61,7 @@ void setup() {
 
   // set master brightness control
   FastLED.setBrightness(BRIGHTNESS);
+  drive_start();
 }
 
 
@@ -120,29 +123,57 @@ void juggle() {
   }
 }
 
-void driving() {
-  // Turn on the driving lights
-  for ( int i = 0; i < NUM_LEDS; i++) {
-    delay(500);
-    if (i < LEFT_START) {
-        leds[i] = CRGB::Red;
-        continue;
+CRGB driving_pos_colour(int pos) {
+    if (pos < LEFT_START) {
+        return CRGB::Red;
     }
-    if (i < FRONT_START) {
-        leds[i] = CRGB::Orange;
-        continue;
-      }
-    if (i < RIGHT_START) {
-        leds[i] = CRGB::White;
-        continue;
-      }
-    if (i < REAR_START) {
-        leds[i] = CRGB::Orange;
-        continue;
-      }
-    leds[i] = CRGB::Red;
+    if (pos < FRONT_START) {
+        return CRGB::Orange;
+    }
+    if (pos < RIGHT_START) {
+        return CRGB::White;
+    }
+    if (pos < REAR_START) {
+        return CRGB::Orange;
+    }
+    return CRGB::Red;
+}
+
+void drive_start() {
+  // Turn on the driving lights
+  // Set it all black to start
+  for ( int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::Black;
   }
-  FastLED.show();
+  for ( int i = 0; i < NUM_LEDS; i++) {
+    FastLED.show();
+    delay(200);
+    leds[i] = driving_pos_colour(i);
+    leds[NUM_LEDS - 1 - i ] = driving_pos_colour(i);
+  }
+}
+
+int other_side(int pos) {
+  return (NUM_LEDS - pos - 1);
+}
+
+void driving() {
+  delay(200);
+  for ( int i = FRONT_START - 1 ; i >= LEFT_START; i-- ) {
+      leds[i] = CHSV(32, 32, 128);
+      leds[other_side(i) ] = CHSV(32, 32, 32);
+    if (i == (FRONT_START - 1)) {
+      leds[LEFT_START] = CRGB::Orange;
+      leds[REAR_START + 1] = CRGB::Orange;
+    } else {
+      leds[i+1] = CRGB::Orange;
+      leds[other_side(i) - 1] = CRGB::Orange;
+    }
+    FastLED.show();
+    delay(200);
+
+  }
+
 }
 
 SimplePatternList gPatterns = { rainbow, rainbowWithGlitter, confetti, sinelon, juggle, bpm, driving };
