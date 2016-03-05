@@ -160,11 +160,11 @@ int other_side(int pos) {
 void driving() {
   delay(200);
   for ( int i = FRONT_START - 1 ; i >= LEFT_START; i-- ) {
-      leds[i] = CHSV(32, 32, 128);
-      leds[other_side(i) ] = CHSV(32, 32, 32);
+    leds[i] = CHSV(32, 32, 128);
+    leds[other_side(i) ] = CHSV(32, 32, 32);
     if (i == (FRONT_START - 1)) {
       leds[LEFT_START] = CRGB::Orange;
-      leds[REAR_START + 1] = CRGB::Orange;
+      leds[REAR_START - 1] = CRGB::Orange;
     } else {
       leds[i+1] = CRGB::Orange;
       leds[other_side(i) - 1] = CRGB::Orange;
